@@ -1,0 +1,11 @@
+{
+  "name": "ham-d-calculator",
+  "version": "1.0.0",
+  "description": "HAM-D 17項目の合計点を自動計算する静的Webアプリ",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check app.js && node --check test/hamd.test.js"
+  },
+  "license": "MIT"
+}
