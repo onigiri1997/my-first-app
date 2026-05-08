@@ -3,24 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HAM-D 17 自動計算ツール</title>
+    <title>MADRS 自動計算ツール</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="hero">
       <div class="hero__content">
-        <p class="eyebrow">Hamilton Depression Rating Scale</p>
-        <h1>HAM-D 17 自動計算ツール</h1>
+        <p class="eyebrow">Montgomery-Åsberg Depression Rating Scale</p>
+        <h1>MADRS 自動計算ツール</h1>
         <p class="lead">
-          各項目の評価を選ぶだけで、HAM-D 17項目版の合計点と参考区分を自動表示します。
-          臨床家による面接評価の補助として使用してください。
+          各項目の0〜6点評価を選ぶだけで、MADRS（Montgomery-Åsberg Depression Rating Scale）10項目の合計点と参考区分を自動表示します。
+          臨床家による面接評価や経時的な変化確認の補助として使用してください。
         </p>
       </div>
       <aside class="score-card" aria-live="polite">
         <span class="score-card__label">合計スコア</span>
         <strong id="totalScore">0</strong>
-        <span id="scoreRange">/ 52</span>
-        <p id="severityLabel" class="severity severity--normal">正常範囲（参考）</p>
+        <span id="scoreRange">/ 60</span>
+        <p id="severityLabel" class="severity severity--normal">正常範囲 / 寛解（参考）</p>
       </aside>
     </header>
 
@@ -28,7 +28,7 @@
       <section class="notice" aria-labelledby="notice-title">
         <h2 id="notice-title">使用上の注意</h2>
         <ul>
-          <li>HAM-Dは訓練を受けた評価者が、原則として直近1週間の状態を面接で評価する尺度です。</li>
+          <li>MADRSは訓練を受けた評価者が、原則として直近1週間の状態を面接で評価する臨床評価尺度です。</li>
           <li>このツールは合計点の計算補助であり、診断・治療方針の決定を代替しません。</li>
           <li>自傷・希死念慮がある場合は、地域の救急窓口や医療機関へ直ちに相談してください。</li>
         </ul>
@@ -40,24 +40,24 @@
         <button id="printPage" type="button" class="button--ghost">印刷 / PDF保存</button>
       </section>
 
-      <form id="hamdForm" class="items" autocomplete="off"></form>
+      <form id="madrsForm" class="items" autocomplete="off"></form>
 
       <section class="summary" aria-labelledby="summary-title">
         <h2 id="summary-title">スコアの目安</h2>
         <div class="bands" id="severityBands"></div>
         <p class="source-note">
-          参考: HAM-D 17は17変数を3件法または5件法で採点し、合計点で評価します。
-          本ツールでは一般的な区分（0–7、8–13、14–18、19–22、23以上）を表示します。
+          参考: MADRSは10項目を各0〜6点で採点し、合計点は0〜60点です。
+          本ツールでは一般的な区分（0–6、7–19、20–34、35–60）を表示します。
         </p>
         <ul class="references">
-          <li><a href="https://datashare.nida.nih.gov/instrument/hamilton-depression-rating-scale" target="_blank" rel="noreferrer">NIDA Data Share: Hamilton Depression Rating Scale</a></li>
-          <li><a href="https://www.ncbi.nlm.nih.gov/books/NBK409740/" target="_blank" rel="noreferrer">NCBI Bookshelf: HAM-D17 scoring instructions summary</a></li>
+          <li><a href="https://www.ncbi.nlm.nih.gov/books/NBK572269/" target="_blank" rel="noreferrer">NCBI Bookshelf: MADRS description and scoring ranges</a></li>
+          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6878407/" target="_blank" rel="noreferrer">PMC: MADRS 10 item structure</a></li>
         </ul>
       </section>
     </main>
 
     <footer>
-      <p>© 2026 HAM-D calculator demo. 入力内容はブラウザ内だけで処理され、送信されません。</p>
+      <p>© 2026 MADRS calculator demo. 入力内容はブラウザ内だけで処理され、送信されません。</p>
     </footer>
 
     <script type="module" src="app.js"></script>
