@@ -1,41 +1,35 @@
-export const hamdItems = [
-  { id: 'depressedMood', title: '抑うつ気分', hint: '悲しみ、絶望感、無力感などの訴えや観察所見', max: 4 },
-  { id: 'guilt', title: '罪責感', hint: '自責、過去への後悔、罰を受ける感覚', max: 4 },
-  { id: 'suicide', title: '自殺念慮', hint: '生きる意欲の低下、自傷・希死念慮、企図の有無', max: 4 },
-  { id: 'insomniaEarly', title: '入眠障害', hint: '寝つきの悪さ', max: 2 },
-  { id: 'insomniaMiddle', title: '中途覚醒', hint: '夜間に目が覚める、睡眠が浅い', max: 2 },
-  { id: 'insomniaLate', title: '早朝覚醒', hint: '予定より早く目覚め、再入眠しにくい', max: 2 },
-  { id: 'workActivities', title: '仕事と活動', hint: '興味・意欲・活動量・作業能力の低下', max: 4 },
-  { id: 'retardation', title: '精神運動制止', hint: '思考や発語、動作の遅さ', max: 4 },
-  { id: 'agitation', title: '焦燥', hint: '落ち着きのなさ、そわそわした行動', max: 4 },
-  { id: 'anxietyPsychic', title: '精神的不安', hint: '心配、緊張、恐怖感など', max: 4 },
-  { id: 'anxietySomatic', title: '身体的不安', hint: '動悸、発汗、胃腸症状、過呼吸感など', max: 4 },
-  { id: 'somaticGastro', title: '消化器症状', hint: '食欲低下、胃部不快、便通変化など', max: 2 },
-  { id: 'somaticGeneral', title: '一般身体症状', hint: '疲労感、痛み、重だるさなど', max: 2 },
-  { id: 'genital', title: '性症状', hint: '性欲、月経などの変化', max: 2 },
-  { id: 'hypochondriasis', title: '心気症', hint: '健康への過度な心配や身体へのとらわれ', max: 4 },
-  { id: 'weightLoss', title: '体重減少', hint: '食事摂取や体重の変化', max: 2 },
-  { id: 'insight', title: '病識', hint: '状態を病気・症状として理解している程度', max: 2 }
-];
+export const madrsItems = [
+  { id: 'apparentSadness', title: '外見上の悲しみ', hint: '表情・姿勢・声の調子に表れる落ち込みや絶望感' },
+  { id: 'reportedSadness', title: '訴えられる悲しみ', hint: '本人が語る悲しみ、気分の沈み、希望のなさ' },
+  { id: 'innerTension', title: '内的緊張', hint: '落ち着かなさ、不安、いらだち、内的な苦痛' },
+  { id: 'reducedSleep', title: '睡眠の減少', hint: '通常時と比べた睡眠時間や睡眠の深さの低下' },
+  { id: 'reducedAppetite', title: '食欲の減退', hint: '通常時と比べた食欲や食事量の低下' },
+  { id: 'concentrationDifficulties', title: '集中困難', hint: '注意の維持、考えをまとめること、判断のしづらさ' },
+  { id: 'lassitude', title: '倦怠感', hint: '疲労感、活力低下、日常活動への取りかかりにくさ' },
+  { id: 'inabilityToFeel', title: '感情を感じにくい', hint: '興味や喜び、周囲への反応が乏しくなる状態' },
+  { id: 'pessimisticThoughts', title: '悲観的思考', hint: '将来への悲観、自責感、価値のなさの感覚' },
+  { id: 'suicidalThoughts', title: '自殺念慮', hint: '死についての考え、生きる価値の低下、自傷・希死念慮' }
+].map((item) => ({ ...item, max: 6 }));
 
 export const severityBands = [
-  { min: 0, max: 7, label: '正常範囲（参考）', className: 'severity--normal' },
-  { min: 8, max: 13, label: '軽度（参考）', className: 'severity--mild' },
-  { min: 14, max: 18, label: '中等度（参考）', className: 'severity--moderate' },
-  { min: 19, max: 22, label: '重度（参考）', className: 'severity--severe' },
-  { min: 23, max: 52, label: '最重度（参考）', className: 'severity--very-severe' }
+  { min: 0, max: 6, label: '正常範囲 / 寛解（参考）', className: 'severity--normal' },
+  { min: 7, max: 19, label: '軽度（参考）', className: 'severity--mild' },
+  { min: 20, max: 34, label: '中等度（参考）', className: 'severity--moderate' },
+  { min: 35, max: 60, label: '重度（参考）', className: 'severity--severe' }
 ];
 
 const optionLabels = {
-  0: 'なし / 該当しない',
-  1: '軽い',
-  2: '明らか',
-  3: '強い',
-  4: '非常に強い'
+  0: '症状なし / 正常範囲',
+  1: 'ごく軽い',
+  2: '軽い',
+  3: '中間',
+  4: '明らか / 強い',
+  5: 'かなり強い',
+  6: '最も強い / 持続的'
 };
 
 export function calculateTotal(scores) {
-  return hamdItems.reduce((total, item) => {
+  return madrsItems.reduce((total, item) => {
     const value = Number(scores[item.id] ?? 0);
     return total + clampScore(value, item.max);
   }, 0);
@@ -47,17 +41,17 @@ export function clampScore(value, max) {
 }
 
 export function getSeverity(total) {
-  const score = clampScore(total, 52);
+  const score = clampScore(total, 60);
   return severityBands.find((band) => score >= band.min && score <= band.max) ?? severityBands.at(-1);
 }
 
 export function createEmptyScores(defaultValue = 0) {
-  return Object.fromEntries(hamdItems.map((item) => [item.id, clampScore(defaultValue, item.max)]));
+  return Object.fromEntries(madrsItems.map((item) => [item.id, clampScore(defaultValue, item.max)]));
 }
 
 function renderForm() {
-  const form = document.querySelector('#hamdForm');
-  form.innerHTML = hamdItems.map(renderItem).join('');
+  const form = document.querySelector('#madrsForm');
+  form.innerHTML = madrsItems.map(renderItem).join('');
   form.addEventListener('change', updateScore);
 }
 
@@ -87,7 +81,7 @@ function renderItem(item, index) {
 function renderBands() {
   const target = document.querySelector('#severityBands');
   target.innerHTML = severityBands.map((band) => `
-    <div class="band">
+    <div class="band ${band.className}">
       <strong>${band.min}–${band.max}点</strong>
       <span>${band.label}</span>
     </div>
@@ -95,13 +89,13 @@ function renderBands() {
 }
 
 function getScoresFromForm() {
-  const data = new FormData(document.querySelector('#hamdForm'));
-  return Object.fromEntries(hamdItems.map((item) => [item.id, Number(data.get(item.id) ?? 0)]));
+  const data = new FormData(document.querySelector('#madrsForm'));
+  return Object.fromEntries(madrsItems.map((item) => [item.id, Number(data.get(item.id) ?? 0)]));
 }
 
 function updateScore() {
   const scores = getScoresFromForm();
-  hamdItems.forEach((item) => {
+  madrsItems.forEach((item) => {
     document.querySelector(`#score-${item.id}`).textContent = `${clampScore(scores[item.id], item.max)}点`;
   });
 
@@ -114,7 +108,7 @@ function updateScore() {
 }
 
 function setAllScores(value) {
-  hamdItems.forEach((item) => {
+  madrsItems.forEach((item) => {
     const safeValue = clampScore(value, item.max);
     const option = document.querySelector(`input[name="${item.id}"][value="${safeValue}"]`);
     if (option) option.checked = true;
@@ -125,7 +119,7 @@ function setAllScores(value) {
 function bindControls() {
   document.querySelector('#fillZero').addEventListener('click', () => setAllScores(0));
   document.querySelector('#resetForm').addEventListener('click', () => {
-    document.querySelector('#hamdForm').reset();
+    document.querySelector('#madrsForm').reset();
     updateScore();
   });
   document.querySelector('#printPage').addEventListener('click', () => window.print());
