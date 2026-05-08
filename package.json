@@ -1,11 +1,11 @@
 {
-  "name": "madrs-calculator",
+  "name": "dsm5tr-depression-checker",
   "version": "1.0.0",
-  "description": "MADRS 10項目の合計点を自動計算する静的Webアプリ",
+  "description": "DSM-5-TRに準拠した大うつ病性障害の診断基準チェック補助を行う静的Webアプリ",
   "type": "module",
   "scripts": {
     "test": "node --test",
-    "check": "node --check app.js && node --check test/madrs.test.js"
+    "check": "node --check app.js && node --check test/dsm5tr.test.js"
   },
   "license": "MIT"
 }
