@@ -3,24 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MADRS 自動計算ツール</title>
+    <title>DSM-5-TR 大うつ病性障害 診断基準チェック</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="hero">
       <div class="hero__content">
-        <p class="eyebrow">Montgomery-Åsberg Depression Rating Scale</p>
-        <h1>MADRS 自動計算ツール</h1>
+        <p class="eyebrow">DSM-5-TR Major Depressive Disorder</p>
+        <h1>大うつ病性障害 診断基準チェック補助</h1>
         <p class="lead">
-          各項目の0〜6点評価を選ぶだけで、MADRS（Montgomery-Åsberg Depression Rating Scale）10項目の合計点と参考区分を自動表示します。
-          臨床家による面接評価や経時的な変化確認の補助として使用してください。
+          DSM-5-TRの大うつ病性障害（MDD）基準に沿って、9つの症状、2週間以上の持続、苦痛・機能障害、除外条件を確認するための補助ツールです。
+          診断を確定するものではなく、医師・心理職など専門家の臨床判断を代替しません。
         </p>
       </div>
-      <aside class="score-card" aria-live="polite">
-        <span class="score-card__label">合計スコア</span>
-        <strong id="totalScore">0</strong>
-        <span id="scoreRange">/ 60</span>
-        <p id="severityLabel" class="severity severity--normal">正常範囲 / 寛解（参考）</p>
+      <aside class="result-card" aria-live="polite">
+        <span class="result-card__label">症状数</span>
+        <strong id="symptomCount">0/9</strong>
+        <p id="coreStatus" class="status-pill status-pill--ng">中核症状が未選択</p>
+        <p id="thresholdStatus" class="status-pill status-pill--ng">5症状以上＋中核症状が必要</p>
+        <p id="episodeStatus" class="status-pill status-pill--ng">期間・苦痛/障害・除外条件を確認</p>
       </aside>
     </header>
 
@@ -28,36 +29,61 @@
       <section class="notice" aria-labelledby="notice-title">
         <h2 id="notice-title">使用上の注意</h2>
         <ul>
-          <li>MADRSは訓練を受けた評価者が、原則として直近1週間の状態を面接で評価する臨床評価尺度です。</li>
-          <li>このツールは合計点の計算補助であり、診断・治療方針の決定を代替しません。</li>
-          <li>自傷・希死念慮がある場合は、地域の救急窓口や医療機関へ直ちに相談してください。</li>
+          <li>このツールはDSM-5-TRの公開情報に基づくチェック補助であり、正式な診断・治療方針の決定を代替しません。</li>
+          <li>症状が物質、医薬品、身体疾患、双極性障害、精神病性障害などで説明される可能性は、専門家による評価が必要です。</li>
+          <li>自傷・希死念慮がある場合は、今すぐ地域の救急窓口、医療機関、または米国では988 Suicide &amp; Crisis Lifelineに連絡してください。</li>
         </ul>
       </section>
 
+      <section id="safetyAlert" class="safety-alert" hidden>
+        <h2>安全確認が必要です</h2>
+        <p>
+          死についての反復思考・自殺念慮が選択されています。差し迫った危険がある場合は一人で対応せず、救急（米国: 911）または危機相談窓口（米国: 988）へ連絡してください。
+        </p>
+      </section>
+
       <section class="controls" aria-label="入力操作">
-        <button id="fillZero" type="button">すべて0点にする</button>
-        <button id="resetForm" type="button" class="button--secondary">入力をリセット</button>
+        <button id="clearAll" type="button">すべて未選択にする</button>
+        <button id="checkAll" type="button" class="button--secondary">すべて選択する</button>
         <button id="printPage" type="button" class="button--ghost">印刷 / PDF保存</button>
       </section>
 
-      <form id="madrsForm" class="items" autocomplete="off"></form>
+      <form id="dsmForm" autocomplete="off">
+        <section class="criteria-section" aria-labelledby="symptom-title">
+          <div class="section-heading">
+            <p class="eyebrow">Criterion A</p>
+            <h2 id="symptom-title">同じ2週間にみられる9つの症状</h2>
+            <p>5つ以上に該当し、かつ「抑うつ気分」または「興味・喜びの著しい低下」の少なくとも一方が必要です。</p>
+          </div>
+          <div id="symptomCriteria" class="criteria-grid"></div>
+        </section>
+
+        <section class="criteria-section" aria-labelledby="additional-title">
+          <div class="section-heading">
+            <p class="eyebrow">Criteria B-E</p>
+            <h2 id="additional-title">期間・苦痛/障害・除外条件</h2>
+            <p>大うつ病エピソードおよび大うつ病性障害として判定するには、以下の条件も確認します。</p>
+          </div>
+          <div id="additionalCriteria" class="criteria-grid criteria-grid--wide"></div>
+        </section>
+      </form>
 
       <section class="summary" aria-labelledby="summary-title">
-        <h2 id="summary-title">スコアの目安</h2>
-        <div class="bands" id="severityBands"></div>
+        <h2 id="summary-title">判定結果</h2>
+        <div id="verdict" class="verdict verdict--not-met">現時点の入力ではDSM-5-TRの主要基準を満たしません</div>
+        <p id="verdictDetail" class="verdict-detail">症状数、中核症状、2週間以上の持続、苦痛・機能障害、物質/身体疾患の影響を確認してください。</p>
         <p class="source-note">
-          参考: MADRSは10項目を各0〜6点で採点し、合計点は0〜60点です。
-          本ツールでは一般的な区分（0–6、7–19、20–34、35–60）を表示します。
+          参考: DSM-5-TRでは、大うつ病性障害の評価に少なくとも1つの大うつ病エピソード、精神病性障害による説明の除外、躁病・軽躁病エピソードの既往確認などが含まれます。
         </p>
         <ul class="references">
-          <li><a href="https://www.ncbi.nlm.nih.gov/books/NBK572269/" target="_blank" rel="noreferrer">NCBI Bookshelf: MADRS description and scoring ranges</a></li>
-          <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6878407/" target="_blank" rel="noreferrer">PMC: MADRS 10 item structure</a></li>
+          <li><a href="https://www.ncbi.nlm.nih.gov/books/NBK617010/box/ch7.box189/" target="_blank" rel="noreferrer">NCBI Bookshelf: DSM-5-TR Criteria for Major Depressive Disorder</a></li>
+          <li><a href="https://www.msdmanuals.com/professional/psychiatric-disorders/mood-disorders/depressive-disorders" target="_blank" rel="noreferrer">MSD Manual Professional Edition: Depressive Disorders</a></li>
         </ul>
       </section>
     </main>
 
     <footer>
-      <p>© 2026 MADRS calculator demo. 入力内容はブラウザ内だけで処理され、送信されません。</p>
+      <p>© 2026 DSM-5-TR depression criteria demo. 入力内容はブラウザ内だけで処理され、送信されません。</p>
     </footer>
 
     <script type="module" src="app.js"></script>
